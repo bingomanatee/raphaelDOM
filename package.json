@@ -1,0 +1,26 @@
+{
+  "name": "raphaelDOM",
+  "version": "0.0.3",
+  "description": "A raphael enhancer to add regional graphic calculus to Raphael",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pc-dedelhart/raphaelDOM.git"
+  },
+  "keywords": [
+    "Raphael.js"
+  ],
+  "author": "Dave Edelhart",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.2"
+  }
+}
