@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
 	// Project configuration.
 	grunt.initConfig({
@@ -8,27 +8,26 @@ module.exports = function(grunt) {
 			options: {
 				separator: ';'
 			},
-			dist: {
-				src: ['src/index.js', 'src/Box.js', 'src/Measure.js', 'src/rect.js'],
+			dist:    {
+				src:  ['src/index.js', 'src/Measure.js', 'src/Dimension.js', 'src/Rect.js', 'src/Box.js', 'src/renderRect.js'],
 				dest: 'build/raphaelDOM.js'
 			}
 		},
 		uglify: {
 			options: {
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-			         mangle: false,
-			         beautify: true,
-			         compress: false
+				mangle:   false,
+				compress: false,
+				banner:   '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 			},
-			build: {
-			       files: [
-				       {	src: 'build/raphaelDOM.js',
-					       dest: 'index.js'},
-				       {
-					       src: 'build/raphaelDOM.js',
-					       dest: 'testServer/public/js/raphaelDOM.js'
-				       }
-			       ]
+			build:   {
+				files: [
+					{    src: 'build/raphaelDOM.js',
+						dest: 'index.js'},
+					{
+						src:  'build/raphaelDOM.js',
+						dest: 'testServer/public/js/raphaelDOM.js'
+					}
+				]
 
 			}
 		}

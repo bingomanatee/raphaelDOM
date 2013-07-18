@@ -17,171 +17,214 @@
  * 'measure' values, like CSS values, can be in multiple formats:
  *        numeric(int or float) - as px
  *        string ('number%')
- *        explicit : {
- *                      value: float,
- *                      type: 'percent' | 'pixel'
- *                    }
  *
  * anchor: what point(relative to the parent) is used to project this boxes' offset.
- *         acceptable values: 'TL', 'TR', 'BL', 'BR', 'topleft', 'topright', 'bottomleft', 'bottomright'.
+ *         acceptable values: 'TL', 'TR', 'BL', 'BR', 'T','L','B','R'
+ *
  * margin: the offset from the anchor for this box. can be a measure or
  *         or an object ( {top: measure, left: measure, right: measure, bottom: measure, width: measure, height: measure, value: measure}.
  *         (all properties optional);
- *         note- this is NOT a rect in that width is a default for left and right, height is a default for top and bottom, and value is a default for all values.
- * padding: the offset of the innerRect from the base rect. same stats as margin.
+ *
+ * padding: padding affects the
+ *
+ * -- note -- both margin and padding are translated in to Dimension objects;
+ *            it is the marginDim and paddingDim objects
+ *            that are used in size calculation;
+ *            the input padding and margin are only used as constructors for the Dimensions.
  *
  */
 
-raphaelDOM.Box = function (name, params, parent, paper) {
-	this.anchor = 'TL';
-	this.margin = 0;
-	this.padding = 0;
-	this.width = '100%';
-	this.height = '100%';
+raphaelDOM.Box = (function () {
 
-	if (params)_.extend(this, params);
-	this.name = name;
-	this._children = [];
-	this.parent = parent;
-	this.paper = paper;
-	this.root = (!(parent.TYPE == 'raphaelDOM.BOX'));
-};
+	var _rgb = _.template('rgb(<%= red %>,<%= green %>, <%= blue %>)');
+	var _hsl = _.template('hsl(<%= hue %>, <%= sat %>%, <%= light %>%)');
 
-raphaelDOM.Box.prototype = {
-	TYPE: 'raphaelDOM.BOX',
-	m:    function (value, basis, name) {
-		return new raphaelDOM.Measure(value, basis, this, name).valueOf();
-	},
+	function Box(name, params, parent, paper) {
+		this.anchor = 'TL';
 
-	mp: function (value, basis, name) {
-		if (_.isNumber(basis)) {
-			return this.m(value, basis, name);
-		} else if (this.root) {
-			return this.m(value, basis, name);
-		} else {
-			return this.parent.m(value, basis, name);
-		}
-	},
+		this.margin = 0;
+		this.padding = 0;
 
-	child: function (name) {
-		var box = new raphaelDOM.Box(name, {}, this, this.paper);
-		this._children.push(box);
-		return box;
-	},
+		this.width = '100%';
+		this.height = '100%';
 
-	/* ************* RECT / INNER RECT ****** */
+		this.rows = 1;
+		this.cols = 1;
 
-	rect: function () {
-		var rect = new raphaelDOM.Rect(0, 0, this.getWidth(), this.getHeight(), this);
+		this.drawType = 'rect';
+		this.color = {
+			red:   0,
+			green: 0,
+			blue:  0
+		};
+		this.colorMode = 'rgb';
+		this.drawAttrs = {
+		};
 
-		var parentRect = this.parentRect().inset(this.margin);
-		if (!this.root) {
-			parentRect = parentRect.intersect(this.parent.innerRect());
-		}
+		if (params)_.extend(this, params);
 
-		return parentRect.frameInMe(rect, this.anchor);
-	},
+		this.name = name;
+		this._children = [];
+		this.parent = parent;
+		this.paper = paper || (parent ? parent.paper : null);
 
-	parentRect: function () {
-		return this.root ? this._rootRect() : this.parent.rect();
-	},
+		this.marginDim = new raphaelDOM.Dimension(this.margin);
+		this.paddingDim = new raphaelDOM.Dimension(this.padding);
+	}
 
-	_rootRect: function () {
-		return new raphaelDOM.Rect(0, 0, this.parent.width(), this.parent.height());
-	},
+	Box.prototype = {
+		TYPE: 'raphaelDOM.BOX',
 
-	/**
-	 * this is the rectangle of this box, inset by padding.
-	 *
-	 * @returns {*}
-	 */
-	innerRect: function () {
-		if (this.padding == 0) {
-			return this.rect();
-		}
-		var padding;
+		is_root: function () {
+			return (this.parent instanceof jQuery) || (!(this.parent.TYPE == 'raphaelDOM.BOX'));
+		},
 
-		if (_.isNumber(this.padding)) {
-			padding = {value: this.padding}
-		} else if (_.isString(this.padding)) {
-			padding = this.map({
-				left:   this.padding,
-				right:  this.padding,
-				top:    this.padding,
-				bottom: this.padding
-			});
-		} else {
-			padding = this.map(this.padding);
-		}
-		return this.rect().inset(padding);
-	},
+		parent_rect: function () {
+			if (this.is_root()) {
+				return new raphaelDOM.Rect(0, 0, this.parent.width(), this.parent.height());
+			} else {
+				return this.parent.rect(true);
+			}
+		},
 
-	map: function (object) {
+		rect: function (inner) {
+			var parent_rect = this.parent_rect();
+			var margin_rect = parent_rect.inset(this.marginDim);
 
-		var obj = {value: object.value};
-		_.each(object, function (value, property) {
-			if (property != 'value') {
-				obj[property] = this.m(value, raphaelDOM.utils.propBasis(property), property);
+			var width = raphaelDOM.utils.scale(this.width, parent_rect.width);
+			var height = raphaelDOM.utils.scale(this.height, parent_rect.height);
+			var left, top;
+
+			//@TODO: a more "semantic" analysis of the anchor.
+
+			switch (this.anchor) {
+				case 'TL':
+					left = margin_rect.left;
+					top = margin_rect.top;
+					break;
+
+				case 'TR':
+					left = margin_rect.right - width;
+					top = margin_rect.top;
+					break;
+
+				case 'T':
+					left = margin_rect.left + (margin_rect.width - width) / 2;
+					top = margin_rect.top;
+					break;
+
+				case 'BL':
+					left = margin_rect.left;
+					top = margin_rect.bottom - height;
+					break;
+
+				case 'BR':
+					left = margin_rect.right - width;
+					top = margin_rect.bottom - height;
+					break;
+
+				case 'B':
+					left = margin_rect.left + (margin_rect.width - width) / 2;
+					top = margin_rect.bottom - height;
+					break;
 			}
 
-		}, this);
+			var rect = new raphaelDOM.Rect(left, top, width, height);
+			return inner ? rect.inset(this.paddingDim) : rect;
+		},
 
-		return obj;
-	},
+		child: function(name){
+			var child = new Box(name || this.name + ' child ' + this._children.length, {}, this);
+			this._children.push(child);
+			return child;
+		},
 
-	/* ************ ANCHOR ****************** */
+		setWidth: function(width){
+			this.width = width;
+			return this;
+		},
 
-	setAnchor: function (value) {
-		this.anchor = value;
-		return this;
-	},
+		setHeight: function(height){
+			this.height = height;
+			return this;
+		},
 
-	/* ********** LEFT, TOP ***************** */
+		setAnchor: function(a){
+			this.anchor = a.replace(/top/i, 'T').replace(/left/i, 'L').replace(/bottom/i, 'B').replace(/right/, 'R').replace(/[^TLBR]/g, '');
+			return this;
+		},
 
-	getLeft: function () {
-		if (this.root) {
-			return 0;
-		} else {
-			return Math.max(
-				this.outerRect().left,
-				this.parent.innerRect().left
-			);
+		/* *************** SETTING PADDING ************ */
+
+		setPadding: function(p){
+			this.paddingDim = new raphaelDOM.Dimension(p);
+			return this;
+		},
+
+		/* *************** SETTING MARGIN ************* */
+
+		setMargin: function(p){
+			this.marginDim = new raphaelDOM.Dimension(p);
+			return this;
+		},
+
+		setTopMargin: function(m){
+			this.marginDim.top = m;
+			return this;
+		},
+
+		setBottomMargin: function(m){
+			this.marginDim.bottom = m;
+			return this;
+		},
+
+		setLeftMargin: function(m){
+			this.marginDim.left = m;
+			return this;
+		},
+
+		setRightMargin: function(m){
+			this.marginDim.right = m;
+			return this;
+		},
+
+
+		/* ************ DRAW ************* */
+
+		_computeFill: function () {
+			if (this.color && _.isObject(this.color)) {
+				switch (this.colorMode) {
+					case 'rgb':
+						this.drawAttrs.fill = _rgb(this.color);
+						break;
+
+					case 'hsl':
+						this.drawAttrs.fill = _hsl(this.color);
+						break;
+				}
+			}
+		},
+
+		draw: function(paper){
+
+			if (paper) {
+				this.paper = paper;
+			}
+
+
+			switch (this.drawType) {
+
+				case 'rect':
+				case 'box':
+				default:
+					this._computeFill();
+					raphaelDOM.draw.rect(this);
+			}
+			_.each(this._children, function (child) {
+				child.draw(this.paper);
+			}, this);
 		}
-	},
+	};
 
-	getTop: function () {
-		if (this.root) {
-			return 0;
-		} else {
-			this.parent.innerRect().getTop();
-		}
-	},
-
-	/* ********** WIDTH , HEIGHT ************ */
-
-	setWidth: function (value) {
-		this.width = value;
-		return this;
-	},
-
-	setHeight: function (value) {
-		this.height = value;
-		return this;
-	},
-
-	getWidth: function () {
-		if (this.root) {
-			return this.parent.width();
-		} else {
-			return new raphaelDOM.Measure(this.width, this.parent.innerRect().width).valueOf();
-		}
-	},
-
-	getHeight: function () {
-		if (this.root) {
-			return this.parent.height();
-		} else {
-			return  new raphaelDOM.Measure(this.height, this.parent.innerRect().height).valueOf();
-		}
-	}
-};
+	return Box;
+})()

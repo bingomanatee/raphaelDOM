@@ -29,4 +29,13 @@ dimension.
 * margin offsets a box relative to its parent's box.
 * a box that has both margins and is inset within a parent with padding will have the maximum offset based on
   both values.
-* Margins expressed as percents are measured against a parent's width and height. 
+* Margins expressed as percents are measured against a parent's width and height.
+
+Note that unlike browser DOM positioning is based on an "anchor" point relative to the parent. (i.e., and it works.)
+That is, if you set a boxes' anchor to BR (bottom Right) it will extend left and up from the upper right corner of the
+parent. (or their inner box if they have padding).
+
+Because every box has an explicit anchor, it is quite possible for a box to "leak out" from the parent's boundaries if
+its witdh/height and margin add up to more than 100% of the bounding box of the parent. This is intentional, to allow
+a child to "peek out" around its parents, for instance when you want to design a tab, you can have it be BL oriented
+with a 100% bottom margin and a fixed height.

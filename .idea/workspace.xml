@@ -2,31 +2,46 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0345735a-8171-4bfc-a40c-c41c22bca9fc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Gruntfile.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testServer/app.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testServer/public/index.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/rect.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testServer/public/tests/testRaphaelDOM.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Dimension.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Grid.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderGrid.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderRect.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testServer/public/test.html" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/build/raphaelDOM.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/measure.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/testServer/public/js/raphaelDOM.js" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/box.js" afterPath="$PROJECT_DIR$/src/Box.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/rect.js" afterPath="$PROJECT_DIR$/src/Rect.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/testServer/public/index.html" afterPath="$PROJECT_DIR$/testServer/public/draw.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gruntfile.js" afterPath="$PROJECT_DIR$/Gruntfile.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testServer/public/tests/testRaphaelDOM.js" afterPath="$PROJECT_DIR$/testServer/public/tests/testRaphaelDOM.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="raphaelDOM.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372185494135" ignored="false" />
-    <file path="/README.md" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372208577251" ignored="false" />
+    <file path="/Dummy.txt" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374103799690" ignored="false" />
+    <file path="/README.md" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372209015206" ignored="false" />
     <file path="/app.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372191126814" ignored="false" />
     <file path="/index.html" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372191773811" ignored="false" />
-    <file path="/Gruntfile.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372202290122" ignored="false" />
+    <file path="/Gruntfile.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374169839730" ignored="false" />
     <file path="/raphaelDOM.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372202382990" ignored="false" />
-    <file path="/rect.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372205769053" ignored="false" />
+    <file path="/rect.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372283510322" ignored="false" />
     <file path="/box.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372203923058" ignored="false" />
     <file path="/measure.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372192162831" ignored="false" />
-    <file path="/testRaphaelDOM.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372207365403" ignored="false" />
-    <file path="/Box.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372207233262" ignored="false" />
+    <file path="/testRaphaelDOM.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374176869690" ignored="false" />
+    <file path="/Box.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374177347161" ignored="false" />
     <file path="/Measure.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372204251645" ignored="false" />
-    <file path="/index.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372199229453" ignored="false" />
-    <file path="/a.dummy" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372207253462" ignored="false" />
+    <file path="/index.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374170204128" ignored="false" />
+    <file path="/a.dummy" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374176975550" ignored="false" />
+    <file path="/renderRect.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374175144372" ignored="false" />
+    <file path="/draw.html" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374177216148" ignored="false" />
+    <file path="/Grid.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372264800719" ignored="false" />
+    <file path="/renderGrid.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1372284282201" ignored="false" />
+    <file path="/Dimension.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374168088757" ignored="false" />
+    <file path="/Rect.js" changelist="0345735a-8171-4bfc-a40c-c41c22bca9fc" time="1374172084709" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,19 +61,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testServer/app.js">
+      <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Gruntfile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="68" selection-start="164" selection-end="164" vertical-scroll-proportion="0.0">
+            <state line="18" column="32" selection-start="419" selection-end="419" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <file leaf-file-name="raphaelDOM.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build/raphaelDOM.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="69" selection-start="247" selection-end="247" vertical-scroll-proportion="0.0">
+            <state line="597" column="33" selection-start="13445" selection-end="13445" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -67,23 +82,11 @@
       <file leaf-file-name="testRaphaelDOM.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testServer/public/tests/testRaphaelDOM.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="297" column="0" selection-start="8628" selection-end="8628" vertical-scroll-proportion="0.0">
+            <state line="322" column="48" selection-start="9576" selection-end="9576" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#569#2796#0" expanded="false" />
-                <element signature="e#2901#5702#0" expanded="false" />
-                <element signature="e#5755#8619#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="raphaelDOM.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testServer/public/js/raphaelDOM.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="190" column="25" selection-start="5678" selection-end="5688" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <marker date="1372207262000" expanded="true" signature="3074:3097" placeholder="{...}" />
+                <element signature="e#569#2830#0" expanded="false" />
+                <element signature="e#2891#8911#0" expanded="false" />
+                <element signature="e#2935#5907#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -92,7 +95,7 @@
       <file leaf-file-name="Box.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Box.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="73" selection-start="1808" selection-end="1808" vertical-scroll-proportion="-38.0">
+            <state line="160" column="24" selection-start="4136" selection-end="4136" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -100,10 +103,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
+      <file leaf-file-name="renderRect.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/renderRect.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="82" selection-start="1430" selection-end="1430" vertical-scroll-proportion="0.92460316">
+            <state line="4" column="40" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Rect.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Rect.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="82" column="0" selection-start="1857" selection-end="1857" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -112,34 +124,16 @@
       <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="0" selection-start="385" selection-end="385" vertical-scroll-proportion="0.0">
+            <state line="15" column="41" selection-start="395" selection-end="395" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rect.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rect.js">
+      <file leaf-file-name="draw.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/testServer/public/draw.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="35" selection-start="1231" selection-end="1231" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Measure.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Measure.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="28" selection-start="1288" selection-end="1288" vertical-scroll-proportion="-6.1153846">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testServer/public/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="0" selection-start="551" selection-end="551" vertical-scroll-proportion="-5.428571">
+            <state line="71" column="106" selection-start="2079" selection-end="2097" vertical-scroll-proportion="0.5458167">
               <folding />
             </state>
           </provider>
@@ -163,19 +157,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/raphaelDOM.js" />
-        <option value="$PROJECT_DIR$/src/measure.js" />
-        <option value="$PROJECT_DIR$/src/box.js" />
-        <option value="$PROJECT_DIR$/testServer/app.js" />
         <option value="$PROJECT_DIR$/testServer/public/index.html" />
-        <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/Gruntfile.js" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/Grid.js" />
+        <option value="$PROJECT_DIR$/src/rect.js" />
+        <option value="$PROJECT_DIR$/src/renderGrid.js" />
         <option value="$PROJECT_DIR$/testServer/public/js/raphaelDOM.js" />
         <option value="$PROJECT_DIR$/src/Measure.js" />
-        <option value="$PROJECT_DIR$/src/rect.js" />
-        <option value="$PROJECT_DIR$/src/Box.js" />
+        <option value="$PROJECT_DIR$/src/Dimension.js" />
+        <option value="$PROJECT_DIR$/Gruntfile.js" />
+        <option value="$PROJECT_DIR$/src/Rect.js" />
+        <option value="$PROJECT_DIR$/src/index.js" />
+        <option value="$PROJECT_DIR$/src/renderRect.js" />
         <option value="$PROJECT_DIR$/testServer/public/tests/testRaphaelDOM.js" />
-        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/build/raphaelDOM.js" />
+        <option value="$PROJECT_DIR$/src/Box.js" />
+        <option value="$PROJECT_DIR$/testServer/public/draw.html" />
       </list>
     </option>
   </component>
@@ -235,6 +232,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -317,61 +315,26 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="testServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="raphaelDOM" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="raphaelDOM" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="testServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="raphaelDOM" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="raphaelDOM" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="raphaelDOM" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="raphaelDOM" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="build" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -385,6 +348,11 @@
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/testServer/public/js" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/testServer/public" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/testServer/public" />
     </key>
@@ -406,6 +374,13 @@
       <method />
     </configuration>
     <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/local/bin/node" path-to-js-file="testServer/app.js" working-dir="$PROJECT_DIR$">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local" singleton="true">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" value="embedded" />
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
       <method />
     </configuration>
     <configuration default="false" name="test server" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/local/bin/node" path-to-js-file="testServer/app.js" working-dir="$PROJECT_DIR$">
@@ -445,24 +420,25 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="874" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293124" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32889965" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3268999" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24982357" sideWeight="0.6711004" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18348624" sideWeight="0.6731001" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32889965" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3268999" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -526,97 +502,111 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/testServer/public/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="0" selection-start="551" selection-end="551" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="214" column="16" selection-start="6630" selection-end="6630" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
+    <entry file="file://$PROJECT_DIR$/src/renderGrid.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="39" selection-start="251" selection-end="251" vertical-scroll-proportion="-6.107143">
+        <state line="21" column="0" selection-start="548" selection-end="548" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testServer/public/index.html">
+    <entry file="file://$PROJECT_DIR$/src/Grid.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="551" selection-end="551" vertical-scroll-proportion="-5.428571">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testServer/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="68" selection-start="164" selection-end="164" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="0" selection-start="385" selection-end="385" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="69" selection-start="247" selection-end="247" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Measure.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="28" selection-start="1288" selection-end="1288" vertical-scroll-proportion="-6.1153846">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rect.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="35" selection-start="1231" selection-end="1231" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testServer/public/js/raphaelDOM.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="190" column="25" selection-start="5678" selection-end="5688" vertical-scroll-proportion="0.0">
+        <state line="0" column="28" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1372207262000" expanded="true" signature="3074:3097" placeholder="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Dimension.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="5" selection-start="520" selection-end="520" vertical-scroll-proportion="-1.2297128">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testServer/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="68" selection-start="164" selection-end="164" vertical-scroll-proportion="0.0948814">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="32" selection-start="419" selection-end="419" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Rect.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="82" column="0" selection-start="1857" selection-end="1857" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="41" selection-start="395" selection-end="395" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testServer/public/tests/testRaphaelDOM.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="297" column="0" selection-start="8628" selection-end="8628" vertical-scroll-proportion="0.0">
+        <state line="322" column="48" selection-start="9576" selection-end="9576" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#569#2796#0" expanded="false" />
-            <element signature="e#2901#5702#0" expanded="false" />
-            <element signature="e#5755#8619#0" expanded="false" />
+            <element signature="e#569#2830#0" expanded="false" />
+            <element signature="e#2891#8911#0" expanded="false" />
+            <element signature="e#2935#5907#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/raphaelDOM.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="597" column="33" selection-start="13445" selection-end="13445" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderRect.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="40" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Box.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="73" selection-start="1808" selection-end="1808" vertical-scroll-proportion="-38.0">
+        <state line="160" column="24" selection-start="4136" selection-end="4136" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
+    <entry file="file://$PROJECT_DIR$/testServer/public/draw.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="82" selection-start="1430" selection-end="1430" vertical-scroll-proportion="0.92460316">
+        <state line="71" column="106" selection-start="2079" selection-end="2097" vertical-scroll-proportion="0.5458167">
           <folding />
         </state>
       </provider>

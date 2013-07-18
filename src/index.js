@@ -1,5 +1,5 @@
 var raphaelDOM = {
-
+	draw:  {},
 	utils: {
 		getProp: function (target, fields) {
 			if (!_.isArray(fields)) {
@@ -13,7 +13,7 @@ var raphaelDOM = {
 			if (!hasField) {
 				throw new Error('cannot find any field ' + fields.join(',') + ' in target)');
 			}
-			return target[hasField];
+			return target[hasField] || 0;
 		},
 
 		propBasis: function (field) {
@@ -32,6 +32,17 @@ var raphaelDOM = {
 
 				default:
 					throw new Error('cannot find basis for ' + field);
+			}
+		},
+
+		scale: function (scale, basis) {
+			if (isNaN(basis)) throw new Error('non basis passed to scale: ' + basis);
+			if (_.isNumber(scale)) return scale;
+			if (/%$/.test(scale)){
+				scale = new Number(scale.replace('%', ''));
+				return scale * basis/100;
+			} else {
+				throw new Error('strange scale ', + scale);
 			}
 		}
 	}
