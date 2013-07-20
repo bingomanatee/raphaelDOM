@@ -1,5 +1,5 @@
 var raphaelDOM = {
-	draw:  {},
+	draw:  {none: _.identity},
 	utils: {
 		getProp: function (target, fields) {
 			if (!_.isArray(fields)) {
@@ -159,7 +159,12 @@ raphaelDOM.Dimension = (function(){
 
 })();;raphaelDOM.Rect = (function () {
 
-	var _string = _.template('x: <%= left %> ... <%= right %>(<%= width %>), y: <%= top %> ... <%= bottom %>(<%= height %>)');
+	var _degree_to_radian = Math.PI / 180;
+
+	window._f = function _f(n) {
+		return Math.round(n * 10) / 10;
+	};
+	var _string = _.template('x: <%= _f(left) %> ... <%= _f(right) %>(<%= _f(width) %>), y: <%= _f(top) %> ... <%= _f(bottom) %>(<%= _f(height) %>)');
 
 	/**
 	 * A rect is a static record of a rectangular dimension in space.
@@ -209,6 +214,43 @@ raphaelDOM.Dimension = (function(){
 			this.validate();
 		},
 
+		center: function () {
+			return {
+				x: this.left + this.width / 2,
+				y: this.top + this.height / 2
+			}
+		},
+
+		radius: function (mode) {
+			switch (mode) {
+				case 'max':
+					return Math.max(this.width, this.height) / 2;
+					break;
+
+				case 'mean':
+					return (this.width, this.height) / 4;
+					break;
+
+				case 'min':
+				default: // == min;
+					return Math.min(this.width, this.height) / 2;
+			}
+		},
+
+		radialPoint: function (angle, mode, radiusScale) {
+			var radius = this.radius(mode);
+			if (arguments.length < 3) radiusScale = 1;
+
+			var r = radius * radiusScale;
+
+			var center = this.center();
+
+			center.x += r * Math.cos(-angle * _degree_to_radian);
+			center.y += r * Math.sin(-angle * _degree_to_radian);
+
+			return center;
+		},
+
 		validate: function () {
 			if (_.any(['left', 'right', 'top', 'bottom', 'height', 'width'],
 				function (field) {
@@ -226,17 +268,17 @@ raphaelDOM.Dimension = (function(){
 
 		intersect: function (rect) {
 			var r2 = new raphaelDOM.Rect({
-					left:   Math.max(this.left, rect.left),
-					right:  Math.min(this.right, rect.right),
-					top:    Math.max(this.top, rect.top),
-					bottom: Math.min(this.bottom, rect.bottom)
-				});
+				left:   Math.max(this.left, rect.left),
+				right:  Math.min(this.right, rect.right),
+				top:    Math.max(this.top, rect.top),
+				bottom: Math.min(this.bottom, rect.bottom)
+			});
 
 			r2.validate();
 			return r2;
 		},
 
-		inset:            function (inset) {
+		inset: function (inset) {
 
 			inset = _.isObject(inset) ? inset : {value: inset};
 
@@ -248,8 +290,8 @@ raphaelDOM.Dimension = (function(){
 			return this._inset(left, top, right, bottom);
 
 		},
-		
-		outset: function(outset){
+
+		outset: function (outset) {
 
 			outset = _.isObject(outset) ? outset : {value: outset};
 			outset.value |= 0;
@@ -261,13 +303,13 @@ raphaelDOM.Dimension = (function(){
 
 			return this._outset(left, top, right, bottom);
 		},
-		
-		clone:         function () {
+
+		clone: function () {
 			return new raphaelDOM.Rect(this);
 
 		},
 
-		_inset:        function (l, t, r, b) {
+		_inset: function (l, t, r, b) {
 			var rect = this.clone();
 
 			l = raphaelDOM.utils.scale(l, this.width);
@@ -287,7 +329,7 @@ raphaelDOM.Dimension = (function(){
 
 		},
 
-		_outset:        function (l, t, r, b) {
+		_outset: function (l, t, r, b) {
 			var rect = this.clone();
 
 			rect.left -= l;
@@ -301,12 +343,12 @@ raphaelDOM.Dimension = (function(){
 			return rect;
 		},
 
-		recalculate: function(){
+		recalculate: function () {
 			this._recalcWidth();
 			this._recalcHeight();
 		},
 
-		_recalcWidth:  function () {
+		_recalcWidth: function () {
 			this.width = this.right - this.left;
 		},
 
@@ -314,7 +356,7 @@ raphaelDOM.Dimension = (function(){
 			this.height = this.bottom - this.top;
 		},
 
-		frameInMe:     function (rect, align) {
+		frameInMe: function (rect, align) {
 			var offsetLeft, offsetTop;
 			var widthDiff = this.width - rect.width;
 			var heightDiff = this.height - rect.height;
@@ -327,7 +369,7 @@ raphaelDOM.Dimension = (function(){
 					break;
 
 				case 'T':
-					offsetLeft = widthDiff/2;
+					offsetLeft = widthDiff / 2;
 					offsetTop = this.top;
 					break;
 
@@ -336,15 +378,14 @@ raphaelDOM.Dimension = (function(){
 					offsetTop = this.top;
 					break;
 
-
 				case 'L':
 					offsetLeft = this.left;
 					offsetTop = this.top;
 					break;
 
 				case 'C':
-					offsetLeft = widthDiff/2;
-					offsetTop =  heightDiff/2;
+					offsetLeft = widthDiff / 2;
+					offsetTop = heightDiff / 2;
 					break;
 
 				case 'R':
@@ -358,7 +399,7 @@ raphaelDOM.Dimension = (function(){
 					break;
 
 				case 'B':
-					offsetLeft = widthDiff/2;
+					offsetLeft = widthDiff / 2;
 					offsetTop = this.bottom - rect.height;
 					break;
 
@@ -367,6 +408,8 @@ raphaelDOM.Dimension = (function(){
 					offsetTop = this.bottom - rect.height;
 					break;
 
+				default:
+					throw new Error('bad anchor' + align);
 			}
 
 			return rect.offset(offsetLeft, offsetTop);
@@ -536,6 +579,9 @@ raphaelDOM.Box = (function () {
 					left = marginRect.left + (marginRect.width - width) / 2;
 					top = marginRect.bottom - height;
 					break;
+
+				default:
+					throw new Error('bad anchor' + this.anchor);
 			}
 
 			var rect = new raphaelDOM.Rect(left, top, width, height);
@@ -559,11 +605,17 @@ raphaelDOM.Box = (function () {
 		},
 
 		setAnchor: function (a) {
-			this.anchor = a.replace(/top/i, 'T').replace(/left/i, 'L').replace(/bottom/i, 'B').replace(/right/, 'R').replace(/[^TLCBR]/g, '');
+			this.anchor = _.reduce({top: 'T', left: 'L', right: 'R', bottom: 'B'}, function(a, shortName, longName){
+				return a.replace(longName, shortName);
+			}, a).replace(/[^TLCBR]/g, '');
 
-			//@TODO: test anchor 
+			//@TODO: test anchor
 
 			return this;
+		},
+
+		getTitle: function(){
+			return this.hasOwnProperty('title') ? this.title : this.name;
 		},
 
 		/* *************** SETTING PADDING ************ */
@@ -645,7 +697,7 @@ raphaelDOM.Box = (function () {
 		},
 
 		setDrawType: function (type) {
-			if (!_.contains(['none', 'calc', 'rect', 'box', 'text', 'grid'], type)) {
+			if (!raphaelDOM.draw.hasOwnProperty(type)) {
 				throw new Error('bad draw type ' + type);
 			}
 
@@ -662,29 +714,12 @@ raphaelDOM.Box = (function () {
 
 			this._computeFill();
 
-			switch (this.drawType) {
-				case 'none':
-					break;
-
-				case 'calc':
-					raphaelDOM.draw.compute(this);
-					break;
-
-				case 'grid':
-					raphaelDOM.draw.grid(this);
-					break;
-
-				case 'text':
-					raphaelDOM.draw.text(this);
-					break;
-
-				case 'rect':
-				case 'box':
-					raphaelDOM.draw.rect(this);
-					break;
-
-				default:
+			if (raphaelDOM.draw[this.drawType]){
+				raphaelDOM.draw[this.drawType](this);
+			} else {
+				throw new Error('cannot find drawType ' + this.drawType);
 			}
+
 			_.each(this._children, function (child) {
 				child.draw(this.paper);
 			}, this);
@@ -758,7 +793,56 @@ raphaelDOM.Box = (function () {
 
 	box.element.attr(_.extend({fill: 'black', title: box.title ? box.title : box.name}, box.drawAttrs || {}));
 
-};;raphaelDOM.draw.rect =  function(box){
+};;raphaelDOM.draw.circle = (function () {
+	var _DEBUG = false;
+
+	var rad = Math.PI / 180;
+
+	function _circle(box) {
+		var rect = box.rect();
+		var center = rect.center();
+		var r = rect.radius(box.radMode || '');
+		return box.paper.circle(center.x, center.y, r);
+	}
+
+	return function (box) {
+		var _DEBUG = false;
+
+		var rect = box.rect();
+
+		box.element = _circle(box);
+		if (_DEBUG) console.log('circle: ', box.name, ':', box, 'rect: ', rect);
+		box.element.attr(_.extend({'stroke-width': 0, fill: 'black', title: box.getTitle() }, box.drawAttrs || {}));
+	}
+
+})();;raphaelDOM.draw.wedge = (function () {
+
+	var rad = Math.PI / 180;
+
+	function _sector(box) {
+		var rect = box.rect();
+		var center = rect.center();
+		var r = rect.radius();
+		var startAngle =  box.hasOwnProperty('startAngle') ? box.startAngle :  0
+			, endAngle = box.hasOwnProperty('endAngle') ? box.endAngle : 360;
+
+		var p1 = rect.radialPoint(startAngle);
+		var p2 = rect.radialPoint(endAngle);
+
+		return box.paper.path(["M", center.x, center.y, "L", p1.x, p1.y, "A", r, r, 0, + (endAngle - startAngle > 180), 0, p2.x, p2.y, "z"]);
+	}
+
+	return function (box) {
+		var _DEBUG = false;
+
+		var rect = box.rect();
+
+		box.element = _sector(box);
+		if (_DEBUG) console.log('box: ', box.name, ':', box, 'rect: ', rect);
+		box.element.attr(_.extend({'stroke-width': 0, fill: 'black', title: box.getTitle() }, box.drawAttrs || {}));
+	}
+
+})();;raphaelDOM.draw.rect =  function(box){
 	var _DEBUG = false;
 
 	var rect = box.rect();
@@ -767,6 +851,7 @@ raphaelDOM.Box = (function () {
 	box.element.attr(_.extend({'stroke-width': 0, fill: 'black', title: box.name}, box.drawAttrs || {}));
 };;raphaelDOM.draw.grid = (function (paper) {
 
+	var _DEBUG = false;
 	var _cell_name_template = _.template('<%= name %> row <%= row %> column <%= column %>');
 
 	return function (box) {
@@ -819,16 +904,20 @@ raphaelDOM.Box = (function () {
 				}
 				cell.draw(paper);
 
-				console.log('cell specs: ', {
-					height: height,
-					width: width,
-					rowTopMargin: rowTopMargin,
-					columnLeftMargin: columnLeftMargin,
-					totalColumnLeftMargin: totalColumnLeftMargin,
-					totalRowTopMargin: totalRowTopMargin
-				});
+				if (_DEBUG || box.debug) {
+					/*console.log('cell specs: ', {
+						name: cell.name,
+						height: height,
+						width: width,
+						rowTopMargin: rowTopMargin,
+						columnLeftMargin: columnLeftMargin,
+						totalColumnLeftMargin: totalColumnLeftMargin,
+						totalRowTopMargin: totalRowTopMargin
+					});*/
+					console.log('cell ', cell.getTitle(), '  rect: ', cell.rect().toString());
+				}
 
-				totalRowTopMargin += rowHeight + rowTopMargin;
+				totalRowTopMargin += height + rowTopMargin;
 
 			});
 			totalColumnLeftMargin += columnLeftMargin + width;

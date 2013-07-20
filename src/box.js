@@ -145,6 +145,9 @@ raphaelDOM.Box = (function () {
 					left = marginRect.left + (marginRect.width - width) / 2;
 					top = marginRect.bottom - height;
 					break;
+
+				default:
+					throw new Error('bad anchor' + this.anchor);
 			}
 
 			var rect = new raphaelDOM.Rect(left, top, width, height);
@@ -168,11 +171,17 @@ raphaelDOM.Box = (function () {
 		},
 
 		setAnchor: function (a) {
-			this.anchor = a.replace(/top/i, 'T').replace(/left/i, 'L').replace(/bottom/i, 'B').replace(/right/, 'R').replace(/[^TLCBR]/g, '');
+			this.anchor = _.reduce({top: 'T', left: 'L', right: 'R', bottom: 'B'}, function(a, shortName, longName){
+				return a.replace(longName, shortName);
+			}, a).replace(/[^TLCBR]/g, '');
 
-			//@TODO: test anchor 
+			//@TODO: test anchor
 
 			return this;
+		},
+
+		getTitle: function(){
+			return this.hasOwnProperty('title') ? this.title : this.name;
 		},
 
 		/* *************** SETTING PADDING ************ */
@@ -254,7 +263,7 @@ raphaelDOM.Box = (function () {
 		},
 
 		setDrawType: function (type) {
-			if (!_.contains(['none', 'calc', 'rect', 'box', 'text', 'grid'], type)) {
+			if (!raphaelDOM.draw.hasOwnProperty(type)) {
 				throw new Error('bad draw type ' + type);
 			}
 
@@ -271,29 +280,12 @@ raphaelDOM.Box = (function () {
 
 			this._computeFill();
 
-			switch (this.drawType) {
-				case 'none':
-					break;
-
-				case 'calc':
-					raphaelDOM.draw.compute(this);
-					break;
-
-				case 'grid':
-					raphaelDOM.draw.grid(this);
-					break;
-
-				case 'text':
-					raphaelDOM.draw.text(this);
-					break;
-
-				case 'rect':
-				case 'box':
-					raphaelDOM.draw.rect(this);
-					break;
-
-				default:
+			if (raphaelDOM.draw[this.drawType]){
+				raphaelDOM.draw[this.drawType](this);
+			} else {
+				throw new Error('cannot find drawType ' + this.drawType);
 			}
+
 			_.each(this._children, function (child) {
 				child.draw(this.paper);
 			}, this);

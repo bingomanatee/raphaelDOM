@@ -45,198 +45,217 @@
 <pre id="report"></pre>
 
 <script>
-    $(function () {
+$(function () {
 
-        (function () {
+    (function () {
 
-            var paper = Raphael($('#draw-area')[0]);
+        var paper = Raphael($('#draw-area')[0]);
 
-            var box = new raphaelDOM.Box('target 1', {width: 300, height: 300, drawType: 'none',
-                        drawAttrs:                           {fill: 'red'}},
-                    $('#draw-area'), paper);
+        var box = new raphaelDOM.Box('target 1', {width: 300, height: 300, drawType: 'none',
+                    drawAttrs:                           {fill: 'red'}},
+                $('#draw-area'), paper);
 
-            _.each(_.range(0, 100, 20), function (y) {
-                var row = box.child('row' + y).setHeight('20%').setTopMargin(y + '%');
-                row.drawMode = 'none';
+        _.each(_.range(0, 100, 20), function (y) {
+            var row = box.child('row' + y).setHeight('20%').setTopMargin(y + '%');
+            row.drawMode = 'none';
 
-                _.each(_.range(0, 100, 20), function (x) {
-                    var child = row.child('t1 cell' + x + 'row' + y).setWidth('20%').setLeftMargin(x + '%');
-                    child.color.red = Math.floor((x * 255) / 100);
-                    child.color.blue = Math.floor((y * 255) / 100);
-                });
+            _.each(_.range(0, 100, 20), function (x) {
+                var child = row.child('t1 cell' + x + 'row' + y).setWidth('20%').setLeftMargin(x + '%');
+                child.color.red = Math.floor((x * 255) / 100);
+                child.color.blue = Math.floor((y * 255) / 100);
             });
+        });
 
-            box.draw();
+        box.draw();
 
-        })();
+    })();
 
-        (function () {
+    (function () {
 
-            var paper = Raphael($('#draw-area2')[0]);
+        var paper = Raphael($('#draw-area2')[0]);
 
-            var box = new raphaelDOM.Box('target 2', {width: 300, height: 300, drawType: 'none',
-                        drawAttrs:                           {fill: 'red'}},
-                    $('#draw-area2'), paper);
+        var box = new raphaelDOM.Box('target 2', {width: 300, height: 300, drawType: 'none',
+                    drawAttrs:                           {fill: 'red'}},
+                $('#draw-area2'), paper);
 
-            _.each(_.range(0, 100, 20), function (y) {
-                var row = box.child('row' + y).setHeight('20%').setTopMargin(y + '%');
-                row.drawType = 'none';
+        _.each(_.range(0, 100, 20), function (y) {
+            var row = box.child('row' + y).setHeight('20%').setTopMargin(y + '%');
+            row.drawType = 'none';
 
-                _.each(_.range(0, 100, 20), function (x) {
-                    var child =
-                            row.child('t2cell' + x + 'row' + y).setWidth('20%').setLeftMargin(x + '%').setPadding('20%');
-                    child.drawType = 'none';
-                    var inner = child.child(child.name + 'inner');
-                    inner.color.red = Math.floor((x * 255) / 100);
-                    inner.color.blue = Math.floor((y * 255) / 100);
+            _.each(_.range(0, 100, 20), function (x) {
+                var child =
+                        row.child('t2cell' + x + 'row' + y).setWidth('20%').setLeftMargin(x + '%').setPadding('20%');
+                child.drawType = 'none';
+                var inner = child.child(child.name + 'inner');
+                inner.color.red = Math.floor((x * 255) / 100);
+                inner.color.blue = Math.floor((y * 255) / 100);
 
-                    //   console.log('inner rect: ', inner.rect());
-                    // console.log ('    inner parent: ', inner.parent.rect(), ' inset ', inner.parent.rect(true));
-                });
+                //   console.log('inner rect: ', inner.rect());
+                // console.log ('    inner parent: ', inner.parent.rect(), ' inset ', inner.parent.rect(true));
             });
+        });
 
-            box.draw();
-        })();
+        box.draw();
+    })();
 
-        (function () {
+    (function () {
 
-            var paper = Raphael($('#draw-area4')[0]);
+        var paper = Raphael($('#draw-area4')[0]);
 
-            var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
-                    $('#draw-area2'), paper).setDrawType('grid');
+        var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
+                $('#draw-area2'), paper).setDrawType('grid');
 
-            box.columns = 5;
-            box.rows = 5;
-            box.columnMargin = 5;
-            box.rowMargin = 10;
+        box.columns = 6;
+        box.rows = 6;
+        box.columnMargin = 5;
+        box.rowMargin = 10;
+        box.debug = true;
 
-            box.processCell = function (inner, column, row) {
+        box.processCell = function (inner, column, row) {
 
-                inner.color.red = Math.floor((column * 255) / 4);
-                inner.color.blue = Math.floor((row * 255) / 4);
-            };
+            inner.color.red = Math.floor((column * 255) / (box.columns - 1));
+            inner.color.blue = Math.floor((row * 255) / (box.rows - 1));
 
-            box.setColumnWidth = function (params) {
-                var width, baseWidth = params.columnWidth;
-                var bonus = baseWidth * 0.5;
-                if (params.column == 1) {
-                    width = baseWidth + bonus;
-                } else {
-                    width = baseWidth - bonus / (params.columns - 1);
-                }
+            inner.child().setDrawType('circle').setColor(255,255,255);
 
-                return width;
-            };
+            var wedge = inner.child(inner.name + 'wedge1').setDrawType('wedge').setColor(0,0,0);
+            wedge.startAngle = 45 + 270;
+            wedge.endAngle = 45 + 360;
+            var wedge2 = inner.child(inner.name + 'wedge2').setDrawType('wedge').setColor(255,255,0);
+            wedge2.startAngle = 45 + 270 - 90;
+            wedge2.endAngle = 45 + 360 - 90;
+        };
 
-            box.draw();
+        box.setRowHeight = function (params) {
+            var baseHeight = params.rowHeight;
+            if (params.row % 2) {
+                return baseHeight * 2;
+            } else {
+                return baseHeight / 2;
+            }
+        };
 
-        })();
+        box.setColumnWidth = function (params) {
+            var width, baseWidth = params.columnWidth;
+            var bonus = baseWidth * 0.8;
+            if (params.column == 1) {
+                width = baseWidth + bonus;
+            } else {
+                width = baseWidth - bonus / (params.columns - 1);
+            }
 
-        (function () {
+            return width;
+        };
 
-            var paper = Raphael($('#draw-area3')[0]);
+        box.draw();
 
-            var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
-                    $('#draw-area2'), paper).setDrawType('grid');
+    })();
 
-            box.columns = 5;
-            box.rows = 5;
-            box.columnMargin = 10;
-            box.rowMargin = 10;
+    (function () {
 
-            box.processCell = function (inner, column, row) {
+        var paper = Raphael($('#draw-area3')[0]);
 
-                inner.color.red = Math.floor((column * 255) / 4);
-                inner.color.blue = Math.floor((row * 255) / 4);
-            };
+        var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
+                $('#draw-area2'), paper).setDrawType('grid');
 
-            box.draw();
+        box.columns = 5;
+        box.rows = 5;
+        box.columnMargin = 10;
+        box.rowMargin = 10;
 
-        })();
+        box.processCell = function (inner, column, row) {
 
-        (function () {
+            inner.color.red = Math.floor((column * 255) / 4);
+            inner.color.blue = Math.floor((row * 255) / 4);
+        };
 
-            var paper = Raphael($('#draw-anchor-demo')[0]);
+        box.draw();
 
-            var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
-                    $('#draw-area2'), paper).setDrawType('grid');
+    })();
 
-            box.columns = 3;
-            box.rows = 3;
-            box.columnMargin = 10;
-            box.rowMargin = 10;
+    (function () {
 
-            box.processCell = function (cell, row, column) {
-                var inner =
-                        cell.setColor(150, 150, 150).child(cell.name + ' inner').setColor(255,0,0).setWidth(10).setHeight(10);
-                switch (column) {
-                    case  0:
-                        switch (row) {
-                            case 0:
-                                inner.setAnchor('TL')
-                                break;
+        var paper = Raphael($('#draw-anchor-demo')[0]);
 
-                            case 1:
+        var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
+                $('#draw-area2'), paper).setDrawType('grid');
 
-                                inner.setAnchor('T');
-                                break;
+        box.columns = 3;
+        box.rows = 3;
+        box.columnMargin = 10;
+        box.rowMargin = 10;
 
-                            case 2:
+        box.processCell = function (cell, row, column) {
+            var inner =
+                    cell.setColor(150, 150, 150).child(cell.name + ' inner').setColor(255, 0, 0).setWidth(10).setHeight(10);
+            switch (column) {
+                case  0:
+                    switch (row) {
+                        case 0:
+                            inner.setAnchor('TL')
+                            break;
 
-                                inner.setAnchor('TR');
-                                break;
-                        }
-                        break;
+                        case 1:
 
-                    case 1:
+                            inner.setAnchor('T');
+                            break;
 
-                        switch (row) {
-                            case 0:
+                        case 2:
 
-                                inner.setAnchor('L');
-                                break;
+                            inner.setAnchor('TR');
+                            break;
+                    }
+                    break;
 
-                            case 1:
+                case 1:
 
-                                inner.setAnchor('C');
-                                break;
+                    switch (row) {
+                        case 0:
 
-                            case 2:
+                            inner.setAnchor('L');
+                            break;
 
-                                inner.setAnchor('R');
-                                break;
-                        }
-                        break;
+                        case 1:
 
-                    case 2:
+                            inner.setAnchor('C');
+                            break;
 
-                        switch (row) {
-                            case 0:
+                        case 2:
 
-                                inner.setAnchor('BL');
-                                break;
+                            inner.setAnchor('R');
+                            break;
+                    }
+                    break;
 
-                            case 1:
+                case 2:
 
-                                inner.setAnchor('B');
-                                break;
+                    switch (row) {
+                        case 0:
 
-                            case 2:
+                            inner.setAnchor('BL');
+                            break;
 
-                                inner.setAnchor('BR');
-                                break;
-                        }
-                        break;
-                }
+                        case 1:
 
-                box.child(inner.name + ' text').setDrawType('text').setAnchor(inner.anchor).text = inner.anchor;
-            };
+                            inner.setAnchor('B');
+                            break;
 
-            box.draw();
+                        case 2:
 
-        })();
+                            inner.setAnchor('BR');
+                            break;
+                    }
+                    break;
+            }
 
-    })
+            box.child(inner.name + ' text').setDrawType('text').setAnchor(inner.anchor).text = inner.anchor;
+        };
+
+        box.draw();
+
+    })();
+
+})
 </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 var raphaelDOM = {
-	draw:  {},
+	draw:  {none: _.identity},
 	utils: {
 		getProp: function (target, fields) {
 			if (!_.isArray(fields)) {

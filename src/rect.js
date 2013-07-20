@@ -1,6 +1,11 @@
 raphaelDOM.Rect = (function () {
 
-	var _string = _.template('x: <%= left %> ... <%= right %>(<%= width %>), y: <%= top %> ... <%= bottom %>(<%= height %>)');
+	var _degree_to_radian = Math.PI / 180;
+
+	window._f = function _f(n) {
+		return Math.round(n * 10) / 10;
+	};
+	var _string = _.template('x: <%= _f(left) %> ... <%= _f(right) %>(<%= _f(width) %>), y: <%= _f(top) %> ... <%= _f(bottom) %>(<%= _f(height) %>)');
 
 	/**
 	 * A rect is a static record of a rectangular dimension in space.
@@ -50,6 +55,43 @@ raphaelDOM.Rect = (function () {
 			this.validate();
 		},
 
+		center: function () {
+			return {
+				x: this.left + this.width / 2,
+				y: this.top + this.height / 2
+			}
+		},
+
+		radius: function (mode) {
+			switch (mode) {
+				case 'max':
+					return Math.max(this.width, this.height) / 2;
+					break;
+
+				case 'mean':
+					return (this.width, this.height) / 4;
+					break;
+
+				case 'min':
+				default: // == min;
+					return Math.min(this.width, this.height) / 2;
+			}
+		},
+
+		radialPoint: function (angle, mode, radiusScale) {
+			var radius = this.radius(mode);
+			if (arguments.length < 3) radiusScale = 1;
+
+			var r = radius * radiusScale;
+
+			var center = this.center();
+
+			center.x += r * Math.cos(-angle * _degree_to_radian);
+			center.y += r * Math.sin(-angle * _degree_to_radian);
+
+			return center;
+		},
+
 		validate: function () {
 			if (_.any(['left', 'right', 'top', 'bottom', 'height', 'width'],
 				function (field) {
@@ -67,17 +109,17 @@ raphaelDOM.Rect = (function () {
 
 		intersect: function (rect) {
 			var r2 = new raphaelDOM.Rect({
-					left:   Math.max(this.left, rect.left),
-					right:  Math.min(this.right, rect.right),
-					top:    Math.max(this.top, rect.top),
-					bottom: Math.min(this.bottom, rect.bottom)
-				});
+				left:   Math.max(this.left, rect.left),
+				right:  Math.min(this.right, rect.right),
+				top:    Math.max(this.top, rect.top),
+				bottom: Math.min(this.bottom, rect.bottom)
+			});
 
 			r2.validate();
 			return r2;
 		},
 
-		inset:            function (inset) {
+		inset: function (inset) {
 
 			inset = _.isObject(inset) ? inset : {value: inset};
 
@@ -89,8 +131,8 @@ raphaelDOM.Rect = (function () {
 			return this._inset(left, top, right, bottom);
 
 		},
-		
-		outset: function(outset){
+
+		outset: function (outset) {
 
 			outset = _.isObject(outset) ? outset : {value: outset};
 			outset.value |= 0;
@@ -102,13 +144,13 @@ raphaelDOM.Rect = (function () {
 
 			return this._outset(left, top, right, bottom);
 		},
-		
-		clone:         function () {
+
+		clone: function () {
 			return new raphaelDOM.Rect(this);
 
 		},
 
-		_inset:        function (l, t, r, b) {
+		_inset: function (l, t, r, b) {
 			var rect = this.clone();
 
 			l = raphaelDOM.utils.scale(l, this.width);
@@ -128,7 +170,7 @@ raphaelDOM.Rect = (function () {
 
 		},
 
-		_outset:        function (l, t, r, b) {
+		_outset: function (l, t, r, b) {
 			var rect = this.clone();
 
 			rect.left -= l;
@@ -142,12 +184,12 @@ raphaelDOM.Rect = (function () {
 			return rect;
 		},
 
-		recalculate: function(){
+		recalculate: function () {
 			this._recalcWidth();
 			this._recalcHeight();
 		},
 
-		_recalcWidth:  function () {
+		_recalcWidth: function () {
 			this.width = this.right - this.left;
 		},
 
@@ -155,7 +197,7 @@ raphaelDOM.Rect = (function () {
 			this.height = this.bottom - this.top;
 		},
 
-		frameInMe:     function (rect, align) {
+		frameInMe: function (rect, align) {
 			var offsetLeft, offsetTop;
 			var widthDiff = this.width - rect.width;
 			var heightDiff = this.height - rect.height;
@@ -168,7 +210,7 @@ raphaelDOM.Rect = (function () {
 					break;
 
 				case 'T':
-					offsetLeft = widthDiff/2;
+					offsetLeft = widthDiff / 2;
 					offsetTop = this.top;
 					break;
 
@@ -177,15 +219,14 @@ raphaelDOM.Rect = (function () {
 					offsetTop = this.top;
 					break;
 
-
 				case 'L':
 					offsetLeft = this.left;
 					offsetTop = this.top;
 					break;
 
 				case 'C':
-					offsetLeft = widthDiff/2;
-					offsetTop =  heightDiff/2;
+					offsetLeft = widthDiff / 2;
+					offsetTop = heightDiff / 2;
 					break;
 
 				case 'R':
@@ -199,7 +240,7 @@ raphaelDOM.Rect = (function () {
 					break;
 
 				case 'B':
-					offsetLeft = widthDiff/2;
+					offsetLeft = widthDiff / 2;
 					offsetTop = this.bottom - rect.height;
 					break;
 
@@ -208,6 +249,8 @@ raphaelDOM.Rect = (function () {
 					offsetTop = this.bottom - rect.height;
 					break;
 
+				default:
+					throw new Error('bad anchor' + align);
 			}
 
 			return rect.offset(offsetLeft, offsetTop);

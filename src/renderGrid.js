@@ -1,5 +1,6 @@
 raphaelDOM.draw.grid = (function (paper) {
 
+	var _DEBUG = false;
 	var _cell_name_template = _.template('<%= name %> row <%= row %> column <%= column %>');
 
 	return function (box) {
@@ -52,16 +53,20 @@ raphaelDOM.draw.grid = (function (paper) {
 				}
 				cell.draw(paper);
 
-				console.log('cell specs: ', {
-					height: height,
-					width: width,
-					rowTopMargin: rowTopMargin,
-					columnLeftMargin: columnLeftMargin,
-					totalColumnLeftMargin: totalColumnLeftMargin,
-					totalRowTopMargin: totalRowTopMargin
-				});
+				if (_DEBUG || box.debug) {
+					/*console.log('cell specs: ', {
+						name: cell.name,
+						height: height,
+						width: width,
+						rowTopMargin: rowTopMargin,
+						columnLeftMargin: columnLeftMargin,
+						totalColumnLeftMargin: totalColumnLeftMargin,
+						totalRowTopMargin: totalRowTopMargin
+					});*/
+					console.log('cell ', cell.getTitle(), '  rect: ', cell.rect().toString());
+				}
 
-				totalRowTopMargin += rowHeight + rowTopMargin;
+				totalRowTopMargin += height + rowTopMargin;
 
 			});
 			totalColumnLeftMargin += columnLeftMargin + width;
