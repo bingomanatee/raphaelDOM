@@ -28,6 +28,14 @@
 
 <div id="draw-area2" style="width: 1000px; height: 500px"></div>
 
+<h2>Computed grid </h2>
+
+<div id="draw-area3" style="width: 1000px; height: 500px"></div>
+
+<h2>Custom grid </h2>
+
+<div id="draw-area4" style="width: 1000px; height: 500px"></div>
+
 <h2>Report</h2>
 
 <pre id="report"></pre>
@@ -39,7 +47,8 @@
 
             var paper = Raphael($('#draw-area')[0]);
 
-            var box = new raphaelDOM.Box('target 1', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
+            var box = new raphaelDOM.Box('target 1', {width: 300, height: 300, drawType: 'none',
+                        drawAttrs:                           {fill: 'red'}},
                     $('#draw-area'), paper);
 
             _.each(_.range(0, 100, 20), function (y) {
@@ -61,27 +70,84 @@
 
             var paper = Raphael($('#draw-area2')[0]);
 
-            var box = new raphaelDOM.Box('target 2', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
+            var box = new raphaelDOM.Box('target 2', {width: 300, height: 300, drawType: 'none',
+                        drawAttrs:                           {fill: 'red'}},
                     $('#draw-area2'), paper);
 
             _.each(_.range(0, 100, 20), function (y) {
                 var row = box.child('row' + y).setHeight('20%').setTopMargin(y + '%');
-                row.drawMode = 'none';
+                row.drawType = 'none';
 
                 _.each(_.range(0, 100, 20), function (x) {
-                    var child = row.child('t2cell' + x + 'row' + y).setWidth('20%').setLeftMargin(x + '%').setPadding('10%');
-                    child.drawMode = 'none';
-                    child.padding = '20%';
+                    var child =
+                            row.child('t2cell' + x + 'row' + y).setWidth('20%').setLeftMargin(x + '%').setPadding('20%');
+                    child.drawType = 'none';
                     var inner = child.child(child.name + 'inner');
-                     inner.color.red = Math.floor((x * 255) / 100);
+                    inner.color.red = Math.floor((x * 255) / 100);
                     inner.color.blue = Math.floor((y * 255) / 100);
 
-                    console.log('inner rect: ', inner.rect());
-                    console.log ('    inner parent: ', inner.parent.rect(), ' inset ', inner.parent.rect(true));
+                    //   console.log('inner rect: ', inner.rect());
+                    // console.log ('    inner parent: ', inner.parent.rect(), ' inset ', inner.parent.rect(true));
                 });
             });
 
             box.draw();
+        })();
+
+        (function () {
+
+            var paper = Raphael($('#draw-area4')[0]);
+
+            var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
+                    $('#draw-area2'), paper).setDrawType('grid');
+
+            box.columns = 5;
+            box.rows = 5;
+            box.columnMargin = 5;
+            box.rowMargin = 10;
+
+            box.processCell = function (inner, column, row) {
+
+                inner.color.red = Math.floor((column * 255) / 4);
+                inner.color.blue = Math.floor((row * 255) / 4);
+            };
+
+            box.setColumnWidth = function (params) {
+                var width, baseWidth = params.columnWidth;
+                var bonus = baseWidth * 0.5;
+                if (params.column == 1) {
+                    width = baseWidth + bonus;
+                } else {
+                    width = baseWidth - bonus /(params.columns - 1);
+                }
+
+                return width;
+            };
+
+            box.draw();
+
+        })();
+
+        (function () {
+
+            var paper = Raphael($('#draw-area3')[0]);
+
+            var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
+                    $('#draw-area2'), paper).setDrawType('grid');
+
+            box.columns = 5;
+            box.rows = 5;
+            box.columnMargin = 10;
+            box.rowMargin = 10;
+
+            box.processCell = function (inner, column, row) {
+
+                inner.color.red = Math.floor((column * 255) / 4);
+                inner.color.blue = Math.floor((row * 255) / 4);
+            };
+
+            box.draw();
+
         })();
 
     })

@@ -47,4 +47,3 @@ var raphaelDOM = {
 		}
 	}
 };
-

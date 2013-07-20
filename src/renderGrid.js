@@ -1,53 +1,71 @@
-raphaelDOM.draw.grid = (function () {
+raphaelDOM.draw.grid = (function (paper) {
+
+	var _cell_name_template = _.template('<%= name %> row <%= row %> column <%= column %>');
+
 	return function (box) {
-		var rect = box.gridMarginDim.expand(box.innerRect());
+		var rect = box.rect(true);
 
-		var rows, cols;
+		var cell_name_template = box.cell_name_template || _cell_name_template;
 
-		if (_.isFunction(box.rows)) {
-			rows = box.rows(rect);
-		} else {
-			rows = _.map(_.range(0, box.rows + 1), function (rowNumber) {
-				return rect.left + rect.width * rowNumber / box.rows;
-			}, box);
-		};
+		var columns = Math.floor(box.columns) || 1;
+		var columnMargin = box.columnMargin || 0;
+		var columnMarginWidth = columnMargin ? raphaelDOM.utils.scale(columnMargin, rect.width) : 0;
+		var columnsWidth = rect.width - (columns - 1) * columnMarginWidth;
+		var columnWidth = columnsWidth / columns;
 
-		if (_.isFunction(box.cols)){
-			cols = box.cols(rect);
-		} else {
-			cols = _.map(_.range(0, box.cols + 1), function(colNumber){
-				return rect.top + rect.width * colNumber / box.cols;
-			});
-		}
+		var rows = Math.floor(box.rows) || 1;
+		var rowMargin = box.rowMargin || 0;
+		var rowMarginHeight = rowMargin ? raphaelDOM.utils.scale(rowMargin, rect.height) : 0;
+		var rowsHeight = rect.height - (rows - 1) * rowMarginHeight;
+		var rowHeight = rowsHeight / rows;
 
-		if (box.gridOrder == 'CR'){
-		} else { // default == rows, then columns
-			_.each(rows, function(rowDef, i){
-				if (_.isObject(rowDef)){
-				} else if (i){
-					var percentX = (i -1)/rows.length;
-					var percentX2 = (i)/rows.length;
+		console.log('grid specs: ', {
+			columns: columns,
+			columnMargin: columnMargin,
+			columnWidth: columnWidth,
+			rows: rows,
+			rowMargin: rowMargin,
+			rowHeight: rowHeight
+		});
 
-					_.each(cols, function(col, j){
-						if (j){
-							var percentY = (i - 1)/cols.length;
-							var percentY2 = i / cols.length;
+		box._children = [];
 
-							var cellRect = box.gridMarginDim.inset(raphaelDOM.Rect({
-								left: rect.left + percentX * rect.width,
-								right: rect.left + percentX2 * rect.width,
-								top: rows.top + percentY * rect.height,
-								bottom: rect.bottom + percentY2 * rect.height
-							}));
+		var totalColumnLeftMargin = 0;
+		_.each(_.range(0, columns), function (column) {
+			var params = {column: column, columns : columns, rows: rows, columnWidth: columnWidth, columnMarginWidth: columnMarginWidth, rect: rect};
+			var width = box.setColumnWidth ? box.setColumnWidth(params) : columnWidth;
+			params.width = width;
+			var columnLeftMargin = box.setColumnMargin ? box.setColumnMargin(params) : columnMarginWidth;
+			var totalRowTopMargin = 0;
 
-							var gridCell = box.drawGridCell(cellRect, i, j);
-						}
-					})
+			_.each(_.range(0, rows), function (row) {
+				params = {row: row, columns : columns, rows: rows, rowHeight: rowHeight, rect: rect, rowMarginHeight: rowMarginHeight};
+				var height = box.setRowHeight ? box.setRowHeight(params) : rowHeight;
+				params.height = height;
+				var rowTopMargin = box.setRowMargin ? box.setRowMargin(params) : rowMarginHeight;
 
-				} else {
-					// skip first row.
+				var cell = box.child(cell_name_template({name: box.name, row: row, column: column}))
+					.setLeftMargin(totalColumnLeftMargin).setTopMargin(totalRowTopMargin).setWidth(width).setHeight(height).setDrawType('rect');
+
+				if (box.processCell) {
+					box.processCell(cell, column, row);
 				}
-			}, box)
-		}
+				cell.draw(paper);
+
+				console.log('cell specs: ', {
+					height: height,
+					width: width,
+					rowTopMargin: rowTopMargin,
+					columnLeftMargin: columnLeftMargin,
+					totalColumnLeftMargin: totalColumnLeftMargin,
+					totalRowTopMargin: totalRowTopMargin
+				});
+
+				totalRowTopMargin += rowHeight + rowTopMargin;
+
+			});
+			totalColumnLeftMargin += columnLeftMargin + width;
+
+		})
 	};
 })();

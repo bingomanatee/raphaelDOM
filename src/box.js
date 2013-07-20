@@ -79,7 +79,7 @@ raphaelDOM.Box = (function () {
 			return (this.parent instanceof jQuery) || (!(this.parent.TYPE == 'raphaelDOM.BOX'));
 		},
 
-		parent_rect: function () {
+		parentRect: function () {
 			if (this.is_root()) {
 				return new raphaelDOM.Rect(0, 0, this.parent.width(), this.parent.height());
 			} else {
@@ -88,44 +88,44 @@ raphaelDOM.Box = (function () {
 		},
 
 		rect: function (inner) {
-			var parent_rect = this.parent_rect();
-			var margin_rect = parent_rect.inset(this.marginDim);
+			var parentRect = this.parentRect();
+			var marginRect = parentRect.inset(this.marginDim);
 
-			var width = raphaelDOM.utils.scale(this.width, parent_rect.width);
-			var height = raphaelDOM.utils.scale(this.height, parent_rect.height);
+			var width = raphaelDOM.utils.scale(this.width, parentRect.width);
+			var height = raphaelDOM.utils.scale(this.height, parentRect.height);
 			var left, top;
 
 			//@TODO: a more "semantic" analysis of the anchor.
 
 			switch (this.anchor) {
 				case 'TL':
-					left = margin_rect.left;
-					top = margin_rect.top;
+					left = marginRect.left;
+					top = marginRect.top;
 					break;
 
 				case 'TR':
-					left = margin_rect.right - width;
-					top = margin_rect.top;
+					left = marginRect.right - width;
+					top = marginRect.top;
 					break;
 
 				case 'T':
-					left = margin_rect.left + (margin_rect.width - width) / 2;
-					top = margin_rect.top;
+					left = marginRect.left + (marginRect.width - width) / 2;
+					top = marginRect.top;
 					break;
 
 				case 'BL':
-					left = margin_rect.left;
-					top = margin_rect.bottom - height;
+					left = marginRect.left;
+					top = marginRect.bottom - height;
 					break;
 
 				case 'BR':
-					left = margin_rect.right - width;
-					top = margin_rect.bottom - height;
+					left = marginRect.right - width;
+					top = marginRect.bottom - height;
 					break;
 
 				case 'B':
-					left = margin_rect.left + (margin_rect.width - width) / 2;
-					top = margin_rect.bottom - height;
+					left = marginRect.left + (marginRect.width - width) / 2;
+					top = marginRect.bottom - height;
 					break;
 			}
 
@@ -133,61 +133,83 @@ raphaelDOM.Box = (function () {
 			return inner ? rect.inset(this.paddingDim) : rect;
 		},
 
-		child: function(name){
+		child: function (name) {
 			var child = new Box(name || this.name + ' child ' + this._children.length, {}, this);
 			this._children.push(child);
 			return child;
 		},
 
-		setWidth: function(width){
+		setWidth: function (width) {
 			this.width = width;
 			return this;
 		},
 
-		setHeight: function(height){
+		setHeight: function (height) {
 			this.height = height;
 			return this;
 		},
 
-		setAnchor: function(a){
+		setAnchor: function (a) {
 			this.anchor = a.replace(/top/i, 'T').replace(/left/i, 'L').replace(/bottom/i, 'B').replace(/right/, 'R').replace(/[^TLBR]/g, '');
+
+			//@TODO: test anchor 
+
 			return this;
 		},
 
 		/* *************** SETTING PADDING ************ */
 
-		setPadding: function(p){
+		setPadding: function (p) {
 			this.paddingDim = new raphaelDOM.Dimension(p);
+			return this;
+		},
+
+		setTopPadding: function (m) {
+			this.paddingDim.top = m;
+			return this;
+		},
+
+		setBottomPadding: function (m) {
+			this.paddingDim.bottom = m;
+			return this;
+		},
+
+		setLeftPadding: function (m) {
+			this.paddingDim.left = m;
+			return this;
+		},
+
+		setRightPadding: function (m) {
+			this.paddingDim.right = m;
 			return this;
 		},
 
 		/* *************** SETTING MARGIN ************* */
 
-		setMargin: function(p){
+		setMargin: function (p) {
 			this.marginDim = new raphaelDOM.Dimension(p);
 			return this;
 		},
 
-		setTopMargin: function(m){
+		setTopMargin: function (m) {
 			this.marginDim.top = m;
 			return this;
 		},
 
-		setBottomMargin: function(m){
+		setBottomMargin: function (m) {
 			this.marginDim.bottom = m;
 			return this;
 		},
 
-		setLeftMargin: function(m){
+		setLeftMargin: function (m) {
 			this.marginDim.left = m;
 			return this;
 		},
 
-		setRightMargin: function(m){
+		setRightMargin: function (m) {
 			this.marginDim.right = m;
 			return this;
 		},
-
 
 		/* ************ DRAW ************* */
 
@@ -205,20 +227,40 @@ raphaelDOM.Box = (function () {
 			}
 		},
 
-		draw: function(paper){
+		setDrawType: function (type) {
+			if (!_.contains(['none', 'calc', 'rect', 'box', 'grid'], type)) {
+				throw new Error('bad draw type ' + type);
+			}
+			
+			this.drawType = type;
+
+			return this;
+		},
+
+		draw: function (paper) {
 
 			if (paper) {
 				this.paper = paper;
 			}
 
-
 			switch (this.drawType) {
+				case 'none':
+					break;
+
+				case 'calc':
+					raphaelDOM.draw.compute(this);
+					break;
+
+				case 'grid':
+					raphaelDOM.draw.grid(this);
+				break;
 
 				case 'rect':
 				case 'box':
-				default:
 					this._computeFill();
 					raphaelDOM.draw.rect(this);
+
+				default:
 			}
 			_.each(this._children, function (child) {
 				child.draw(this.paper);
@@ -227,4 +269,4 @@ raphaelDOM.Box = (function () {
 	};
 
 	return Box;
-})()
+})();
