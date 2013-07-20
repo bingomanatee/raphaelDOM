@@ -491,6 +491,11 @@ raphaelDOM.Box = (function () {
 			green: 0,
 			blue:  0
 		};
+		this.strokeColor = {
+			red:   0,
+			green: 0,
+			blue:  0
+		};
 		this.colorMode = 'rgb';
 		this.drawAttrs = {
 		};
@@ -687,11 +692,32 @@ raphaelDOM.Box = (function () {
 				}
 			}
 		},
+		_computeStroke: function () {
+			if (this.strokeColor && _.isObject(this.strokeColor)) {
+				switch (this.colorMode) {
+					case 'rgb':
+						this.drawAttrs.stroke = _rgb(this.strokeColor);
+						break;
+
+					case 'hsl':
+						this.drawAttrs.stroke = _hsl(this.strokeColor);
+						break;
+				}
+			}
+		},
 
 		setColor: function (r, g, b) {
 			this.color.red = r;
 			this.color.green = g;
 			this.color.blue = b;
+
+			return this;
+		},
+
+		setStrokeColor: function (r, g, b) {
+			this.strokeColor.red = r;
+			this.strokeColor.green = g;
+			this.strokeColor.blue = b;
 
 			return this;
 		},
@@ -713,6 +739,9 @@ raphaelDOM.Box = (function () {
 			}
 
 			this._computeFill();
+			if (this.drawAttrs['stroke-width']){
+				this._computeStroke();
+			}
 
 			if (raphaelDOM.draw[this.drawType]){
 				raphaelDOM.draw[this.drawType](this);
@@ -816,8 +845,6 @@ raphaelDOM.Box = (function () {
 	}
 
 })();;raphaelDOM.draw.wedge = (function () {
-
-	var rad = Math.PI / 180;
 
 	function _sector(box) {
 		var rect = box.rect();

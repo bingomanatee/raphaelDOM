@@ -102,34 +102,51 @@ $(function () {
 
         var paper = Raphael($('#draw-area4')[0]);
 
-        var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
+        var box = new raphaelDOM.Box('grid box', {width: 800, height: 300},
                 $('#draw-area2'), paper).setDrawType('grid');
 
-        box.columns = 6;
-        box.rows = 6;
+        box.columns = 4;
+        box.rows = 4;
         box.columnMargin = 5;
         box.rowMargin = 10;
-        box.debug = true;
+
+        var wedges = [];
+
+        function _save_wedge (wedge){
+            wedges.push(wedge);
+        }
 
         box.processCell = function (inner, column, row) {
 
             inner.color.red = Math.floor((column * 255) / (box.columns - 1));
             inner.color.blue = Math.floor((row * 255) / (box.rows - 1));
 
-            inner.child().setDrawType('circle').setColor(255,255,255);
+            var angle = Math.floor(Math.max(10, Math.random() * 180));
+            var wedge = inner.child(inner.name + ' wedge 1').setDrawType('wedge').setColor(0,0,0);
+            wedge.startAngle = 0;
+            wedge.endAngle = 0 + angle;
 
-            var wedge = inner.child(inner.name + 'wedge1').setDrawType('wedge').setColor(0,0,0);
-            wedge.startAngle = 45 + 270;
-            wedge.endAngle = 45 + 360;
-            var wedge2 = inner.child(inner.name + 'wedge2').setDrawType('wedge').setColor(255,255,0);
-            wedge2.startAngle = 45 + 270 - 90;
-            wedge2.endAngle = 45 + 360 - 90;
+            _save_wedge(wedge);
+
+
+            var angle2 = Math.floor(Math.max(10, Math.random() * 180));
+
+            var wedge2 = inner.child(inner.name + ' wedge 2').setDrawType('wedge').setColor(255,255,0);
+            wedge2.startAngle = wedge.endAngle;
+            wedge2.endAngle = wedge.endAngle  + angle2;
+
+            _save_wedge(wedge2);
+
+            var wedge3 = inner.child(inner.name + 'weedge 3').setDrawType('wedge').setColor(0, 255, 0);
+            wedge3.startAngle = wedge2.endAngle;
+            wedge3.endAngle = 360;
+            _save_wedge(wedge3);
         };
 
         box.setRowHeight = function (params) {
             var baseHeight = params.rowHeight;
             if (params.row % 2) {
-                return baseHeight * 2;
+                return baseHeight * 1.5;
             } else {
                 return baseHeight / 2;
             }
@@ -148,6 +165,35 @@ $(function () {
         };
 
         box.draw();
+
+
+        var labelBox = new raphaelDOM.Box('grid box', {width: 800, height: 300},
+                $('#draw-area2'), paper).setDrawType('none').setColor(128, 128, 128);
+        labelBox.drawAttrs.opacity = 0.5;
+
+        _.each(wedges, function(wedge, i){
+            var rect = wedge.rect();
+            var point = rect.radialPoint((wedge.startAngle + wedge.endAngle) / 2);
+            var textBox =
+                    labelBox.child(wedge.name).setLeftMargin(point.x).setWidth(30).setHeight(10).setTopMargin(point.y).setDrawType('rect').setColor(wedge.color.red, wedge.color.green, wedge.color.blue);
+            textBox.drawAttrs.opacity = 0.5;
+            textBox.child().setDrawType('text').setAnchor('TL').setColor(128,128,128).text = (wedge.endAngle -
+                    wedge.startAngle) + '%';
+
+            /*
+            console.log('wedge: ', rect.toString());
+            console.log('point: ', _f(point.x), _f(point.y));
+            console.log('text box ' + wedge.name + ' rect: ', textBox.rect().toString());
+
+
+
+            var wedge2 =
+                    labelBox.child().setWidth(rect.width).setHeight(rect.height).setLeftMargin(rect.left).setTopMargin(rect.top).setColor(0,0,255);
+
+            wedge2.drawAttrs.opacity = 0.5;*/
+        });
+
+        labelBox.draw();
 
     })();
 
@@ -186,6 +232,10 @@ $(function () {
         box.rowMargin = 10;
 
         box.processCell = function (cell, row, column) {
+            cell.drawAttrs['stroke-width'] = 1;
+            cell.setStrokeColor(0,255,0);
+
+            cell.child().setDrawType('circle').setColor(255,255,255);
             var inner =
                     cell.setColor(150, 150, 150).child(cell.name + ' inner').setColor(255, 0, 0).setWidth(10).setHeight(10);
             switch (column) {
