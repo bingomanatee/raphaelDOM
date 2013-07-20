@@ -36,6 +36,10 @@
 
 <div id="draw-area4" style="width: 1000px; height: 500px"></div>
 
+<h2>Anchor Demo </h2>
+
+<div id="draw-anchor-demo" style="width: 1000px; height: 500px"></div>
+
 <h2>Report</h2>
 
 <pre id="report"></pre>
@@ -118,7 +122,7 @@
                 if (params.column == 1) {
                     width = baseWidth + bonus;
                 } else {
-                    width = baseWidth - bonus /(params.columns - 1);
+                    width = baseWidth - bonus / (params.columns - 1);
                 }
 
                 return width;
@@ -144,6 +148,88 @@
 
                 inner.color.red = Math.floor((column * 255) / 4);
                 inner.color.blue = Math.floor((row * 255) / 4);
+            };
+
+            box.draw();
+
+        })();
+
+        (function () {
+
+            var paper = Raphael($('#draw-anchor-demo')[0]);
+
+            var box = new raphaelDOM.Box('grid box', {width: 300, height: 300, drawAttrs: {fill: 'red'}},
+                    $('#draw-area2'), paper).setDrawType('grid');
+
+            box.columns = 3;
+            box.rows = 3;
+            box.columnMargin = 10;
+            box.rowMargin = 10;
+
+            box.processCell = function (cell, row, column) {
+                var inner =
+                        cell.setColor(150, 150, 150).child(cell.name + ' inner').setColor(255,0,0).setWidth(10).setHeight(10);
+                switch (column) {
+                    case  0:
+                        switch (row) {
+                            case 0:
+                                inner.setAnchor('TL')
+                                break;
+
+                            case 1:
+
+                                inner.setAnchor('T');
+                                break;
+
+                            case 2:
+
+                                inner.setAnchor('TR');
+                                break;
+                        }
+                        break;
+
+                    case 1:
+
+                        switch (row) {
+                            case 0:
+
+                                inner.setAnchor('L');
+                                break;
+
+                            case 1:
+
+                                inner.setAnchor('C');
+                                break;
+
+                            case 2:
+
+                                inner.setAnchor('R');
+                                break;
+                        }
+                        break;
+
+                    case 2:
+
+                        switch (row) {
+                            case 0:
+
+                                inner.setAnchor('BL');
+                                break;
+
+                            case 1:
+
+                                inner.setAnchor('B');
+                                break;
+
+                            case 2:
+
+                                inner.setAnchor('BR');
+                                break;
+                        }
+                        break;
+                }
+
+                box.child(inner.name + ' text').setDrawType('text').setAnchor(inner.anchor).text = inner.anchor;
             };
 
             box.draw();

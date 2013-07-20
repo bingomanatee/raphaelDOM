@@ -316,10 +316,18 @@ raphaelDOM.Dimension = (function(){
 
 		frameInMe:     function (rect, align) {
 			var offsetLeft, offsetTop;
+			var widthDiff = this.width - rect.width;
+			var heightDiff = this.height - rect.height;
+
 			switch (align) {
 
 				case 'TL':
 					offsetLeft = this.left;
+					offsetTop = this.top;
+					break;
+
+				case 'T':
+					offsetLeft = widthDiff/2;
 					offsetTop = this.top;
 					break;
 
@@ -328,8 +336,29 @@ raphaelDOM.Dimension = (function(){
 					offsetTop = this.top;
 					break;
 
+
+				case 'L':
+					offsetLeft = this.left;
+					offsetTop = this.top;
+					break;
+
+				case 'C':
+					offsetLeft = widthDiff/2;
+					offsetTop =  heightDiff/2;
+					break;
+
+				case 'R':
+					offsetLeft = this.right - rect.width;
+					offsetTop = this.top;
+					break;
+
 				case 'BL':
 					offsetLeft = this.left;
+					offsetTop = this.bottom - rect.height;
+					break;
+
+				case 'B':
+					offsetLeft = widthDiff/2;
 					offsetTop = this.bottom - rect.height;
 					break;
 
@@ -457,6 +486,9 @@ raphaelDOM.Box = (function () {
 			var height = raphaelDOM.utils.scale(this.height, parentRect.height);
 			var left, top;
 
+			var diffWidth = marginRect.width - width;
+			var diffHeight = marginRect.height - height;
+
 			//@TODO: a more "semantic" analysis of the anchor.
 
 			switch (this.anchor) {
@@ -471,8 +503,23 @@ raphaelDOM.Box = (function () {
 					break;
 
 				case 'T':
-					left = marginRect.left + (marginRect.width - width) / 2;
+					left = marginRect.left + diffWidth / 2;
 					top = marginRect.top;
+					break;
+
+				case 'L':
+					left = marginRect.left;
+					top = marginRect.top + diffHeight / 2;
+					break;
+
+				case 'C':
+					left = marginRect.left + diffWidth / 2;
+					top = marginRect.top + diffHeight / 2;
+					break;
+
+				case 'R':
+					left = marginRect.right - width;
+					top = marginRect.top + diffHeight / 2;
 					break;
 
 				case 'BL':
@@ -512,7 +559,7 @@ raphaelDOM.Box = (function () {
 		},
 
 		setAnchor: function (a) {
-			this.anchor = a.replace(/top/i, 'T').replace(/left/i, 'L').replace(/bottom/i, 'B').replace(/right/, 'R').replace(/[^TLBR]/g, '');
+			this.anchor = a.replace(/top/i, 'T').replace(/left/i, 'L').replace(/bottom/i, 'B').replace(/right/, 'R').replace(/[^TLCBR]/g, '');
 
 			//@TODO: test anchor 
 
@@ -589,11 +636,19 @@ raphaelDOM.Box = (function () {
 			}
 		},
 
+		setColor: function (r, g, b) {
+			this.color.red = r;
+			this.color.green = g;
+			this.color.blue = b;
+
+			return this;
+		},
+
 		setDrawType: function (type) {
-			if (!_.contains(['none', 'calc', 'rect', 'box', 'grid'], type)) {
+			if (!_.contains(['none', 'calc', 'rect', 'box', 'text', 'grid'], type)) {
 				throw new Error('bad draw type ' + type);
 			}
-			
+
 			this.drawType = type;
 
 			return this;
@@ -605,6 +660,8 @@ raphaelDOM.Box = (function () {
 				this.paper = paper;
 			}
 
+			this._computeFill();
+
 			switch (this.drawType) {
 				case 'none':
 					break;
@@ -615,12 +672,16 @@ raphaelDOM.Box = (function () {
 
 				case 'grid':
 					raphaelDOM.draw.grid(this);
-				break;
+					break;
+
+				case 'text':
+					raphaelDOM.draw.text(this);
+					break;
 
 				case 'rect':
 				case 'box':
-					this._computeFill();
 					raphaelDOM.draw.rect(this);
+					break;
 
 				default:
 			}
@@ -631,7 +692,73 @@ raphaelDOM.Box = (function () {
 	};
 
 	return Box;
-})();;raphaelDOM.draw.rect =  function(box){
+})();;raphaelDOM.draw.text = function (box) {
+	var _DEBUG = false;
+
+	var rect = box.rect();
+
+	var fontHeight = box.drawAttrs['font-size'] || 12;
+	box.drawAttrs['font-size'] = fontHeight;
+	var bigHeightDiff = rect.height - fontHeight;
+	fontHeight *= 0.6;
+	var heightDiff = rect.height - fontHeight;
+
+	var paper = box.paper;
+
+	switch (box.anchor) {
+
+		case 'TL':
+			box.element = paper.text(rect.left, rect.top + fontHeight, box.text);
+			box.element.attr('text-anchor', 'start');
+			break;
+
+		case 'T':
+			box.element = paper.text(rect.left + rect.width / 2, rect.top + fontHeight, box.text);
+			box.element.attr('text-anchor', 'middle');
+			break;
+
+		case 'TR':
+			box.element = paper.text(rect.right, rect.top + fontHeight, box.text);
+			box.element.attr('text-anchor', 'end');
+			break;
+
+		case 'L':
+			box.element = paper.text(rect.left, rect.top +  (fontHeight + heightDiff) / 2, box.text);
+			box.element.attr('text-anchor', 'start');
+			break;
+
+		case 'C':
+			box.element = paper.text(rect.left + rect.width / 2, rect.top  + (fontHeight + heightDiff) / 2, box.text);
+			box.element.attr('text-anchor', 'middle');
+			break;
+
+		case 'R':
+			box.element = paper.text(rect.right, rect.top +  (fontHeight + heightDiff) / 2, box.text);
+			box.element.attr('text-anchor', 'end');
+			break;
+
+		case 'BL':
+			box.element = paper.text(rect.left, rect.bottom - fontHeight, box.text);
+			box.element.attr('text-anchor', 'start');
+			break;
+
+		case 'B':
+			box.element = paper.text(rect.left + rect.width / 2, rect.bottom - fontHeight, box.text);
+			box.element.attr('text-anchor', 'middle');
+			break;
+
+		case 'BR':
+			box.element = paper.text(rect.right, rect.bottom - fontHeight, box.text);
+			box.element.attr('text-anchor', 'end');
+			break;
+
+		default:
+			throw new Error('no anchor '+ box.anchor);
+	}
+
+	box.element.attr(_.extend({fill: 'black', title: box.title ? box.title : box.name}, box.drawAttrs || {}));
+
+};;raphaelDOM.draw.rect =  function(box){
 	var _DEBUG = false;
 
 	var rect = box.rect();

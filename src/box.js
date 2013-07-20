@@ -95,6 +95,9 @@ raphaelDOM.Box = (function () {
 			var height = raphaelDOM.utils.scale(this.height, parentRect.height);
 			var left, top;
 
+			var diffWidth = marginRect.width - width;
+			var diffHeight = marginRect.height - height;
+
 			//@TODO: a more "semantic" analysis of the anchor.
 
 			switch (this.anchor) {
@@ -109,8 +112,23 @@ raphaelDOM.Box = (function () {
 					break;
 
 				case 'T':
-					left = marginRect.left + (marginRect.width - width) / 2;
+					left = marginRect.left + diffWidth / 2;
 					top = marginRect.top;
+					break;
+
+				case 'L':
+					left = marginRect.left;
+					top = marginRect.top + diffHeight / 2;
+					break;
+
+				case 'C':
+					left = marginRect.left + diffWidth / 2;
+					top = marginRect.top + diffHeight / 2;
+					break;
+
+				case 'R':
+					left = marginRect.right - width;
+					top = marginRect.top + diffHeight / 2;
 					break;
 
 				case 'BL':
@@ -150,7 +168,7 @@ raphaelDOM.Box = (function () {
 		},
 
 		setAnchor: function (a) {
-			this.anchor = a.replace(/top/i, 'T').replace(/left/i, 'L').replace(/bottom/i, 'B').replace(/right/, 'R').replace(/[^TLBR]/g, '');
+			this.anchor = a.replace(/top/i, 'T').replace(/left/i, 'L').replace(/bottom/i, 'B').replace(/right/, 'R').replace(/[^TLCBR]/g, '');
 
 			//@TODO: test anchor 
 
@@ -227,11 +245,19 @@ raphaelDOM.Box = (function () {
 			}
 		},
 
+		setColor: function (r, g, b) {
+			this.color.red = r;
+			this.color.green = g;
+			this.color.blue = b;
+
+			return this;
+		},
+
 		setDrawType: function (type) {
-			if (!_.contains(['none', 'calc', 'rect', 'box', 'grid'], type)) {
+			if (!_.contains(['none', 'calc', 'rect', 'box', 'text', 'grid'], type)) {
 				throw new Error('bad draw type ' + type);
 			}
-			
+
 			this.drawType = type;
 
 			return this;
@@ -243,6 +269,8 @@ raphaelDOM.Box = (function () {
 				this.paper = paper;
 			}
 
+			this._computeFill();
+
 			switch (this.drawType) {
 				case 'none':
 					break;
@@ -253,12 +281,16 @@ raphaelDOM.Box = (function () {
 
 				case 'grid':
 					raphaelDOM.draw.grid(this);
-				break;
+					break;
+
+				case 'text':
+					raphaelDOM.draw.text(this);
+					break;
 
 				case 'rect':
 				case 'box':
-					this._computeFill();
 					raphaelDOM.draw.rect(this);
+					break;
 
 				default:
 			}

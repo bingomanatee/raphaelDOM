@@ -157,10 +157,18 @@ raphaelDOM.Rect = (function () {
 
 		frameInMe:     function (rect, align) {
 			var offsetLeft, offsetTop;
+			var widthDiff = this.width - rect.width;
+			var heightDiff = this.height - rect.height;
+
 			switch (align) {
 
 				case 'TL':
 					offsetLeft = this.left;
+					offsetTop = this.top;
+					break;
+
+				case 'T':
+					offsetLeft = widthDiff/2;
 					offsetTop = this.top;
 					break;
 
@@ -169,8 +177,29 @@ raphaelDOM.Rect = (function () {
 					offsetTop = this.top;
 					break;
 
+
+				case 'L':
+					offsetLeft = this.left;
+					offsetTop = this.top;
+					break;
+
+				case 'C':
+					offsetLeft = widthDiff/2;
+					offsetTop =  heightDiff/2;
+					break;
+
+				case 'R':
+					offsetLeft = this.right - rect.width;
+					offsetTop = this.top;
+					break;
+
 				case 'BL':
 					offsetLeft = this.left;
+					offsetTop = this.bottom - rect.height;
+					break;
+
+				case 'B':
+					offsetLeft = widthDiff/2;
 					offsetTop = this.bottom - rect.height;
 					break;
 

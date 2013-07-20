@@ -9,7 +9,7 @@ module.exports = function (grunt) {
 				separator: ';'
 			},
 			dist:    {
-				src:  ['src/index.js', 'src/Measure.js', 'src/Dimension.js', 'src/Rect.js', 'src/Box.js', 'src/renderRect.js', 'src/renderGrid.js'],
+				src:  ['src/index.js', 'src/Measure.js', 'src/Dimension.js', 'src/Rect.js', 'src/Box.js', 'src/renderText.js', 'src/renderRect.js', 'src/renderGrid.js'],
 				dest: 'build/raphaelDOM.js'
 			}
 		},
