@@ -898,7 +898,7 @@ raphaelDOM.Box = (function () {
 		var rowsHeight = rect.height - (rows - 1) * rowMarginHeight;
 		var rowHeight = rowsHeight / rows;
 
-		console.log('grid specs: ', {
+	 if (_DEBUG)	console.log('grid specs: ', {
 			columns: columns,
 			columnMargin: columnMargin,
 			columnWidth: columnWidth,
